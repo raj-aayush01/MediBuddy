@@ -1,18 +1,13 @@
+const API_URL = "https://medibuddy-f0ao.onrender.com/api";
+
 export const searchMedicines = async (query) => {
-    const url =
-        `https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${encodeURIComponent(query)}"&limit=20`;
-
-    const response = await fetch(url);
-
-    if (response.status === 404) {
-        return [];
-    }
+    const response = await fetch(
+        `${API_URL}/medicines?search=${encodeURIComponent(query)}`
+    );
 
     if (!response.ok) {
-        throw new Error("FDA API request failed");
+        throw new Error("Failed to fetch medicines");
     }
 
-    const data = await response.json();
-
-    return data.results || [];
+    return response.json();
 };
